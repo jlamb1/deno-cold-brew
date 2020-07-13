@@ -4,7 +4,7 @@ import { config } from "https://deno.land/x/dotenv/mod.ts";
 const hapikey:string = config()["hapikey"];
 const port:number =  parseInt(config()["PORT"]) || 8080;
 
-async function updateCell(row:number, cell:number, value:string) {
+async function updateCell(row:number, cell:number, value:string|number) {
     await fetch(`https://api.hubapi.com/hubdb/api/v1/tables/105070/rows/${row}/cells/${cell}?hapikey=${hapikey}`, {
         method: "PUT",
         body: JSON.stringify({ "value": value }),
@@ -27,7 +27,7 @@ router
     .post("/:tap/:bool", (ctx) => {
         let row:number, value:string;
         let d:Date = new Date("2020-04-13T00:00:00.000-04:00");
-        let timestamp:any = d.valueOf();
+        let timestamp:number = d.valueOf();
         if (ctx.params.bool === "yes") {
             value = "yes"
         } else {
