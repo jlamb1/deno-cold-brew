@@ -1,1 +1,1 @@
-`deno run --allow-net --allow-read=./ --allow-env server.ts`
+`deno run --allow-net=0.0.0.0,api.hubapi.com --allow-read=./ --allow-env server.ts`
