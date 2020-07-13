@@ -4,16 +4,18 @@ import { config } from "https://deno.land/x/dotenv/mod.ts";
 const hapikey:string = config()['hapikey'];
 const port:number =  parseInt(config()['PORT']) || 8080;
 
-const updateCell = (row:number, cell:number, value:string) => {
-    new Request(`https://api.hubapi.com/hubdb/api/v1/tables/105070/rows/${row}/cells/${cell}?hapikey=${hapikey}`,
-    {
+async function updateCell(row:number, cell:number, value:string) {
+    await fetch(`https://api.hubapi.com/hubdb/api/v1/tables/105070/rows/${row}/cells/${cell}?hapikey=${hapikey}`, {
         method: "PUT",
         body: JSON.stringify({ 'value': value }),
         headers: {
             'Content-Type': 'application/json',
             'User-Agent': 'Mozilla/5.0'
-        }}
-    )
+        }
+    }).then(function(response) {
+        console.log(`body: ${response.body}, status: ${response.status}`)
+        return response.json();
+      })
 }
 
 const router = new Router();
@@ -50,6 +52,8 @@ router
         }
         updateCell(row, 4, value);
         updateCell(row, 9, timestamp);
+        ctx.response.status = 200;
+        ctx.response.body = `{ message: ${ctx.response.status}}`
 
     })
 
