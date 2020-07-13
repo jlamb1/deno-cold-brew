@@ -1,16 +1,16 @@
 import { Application, Router } from "https://deno.land/x/oak/mod.ts";
 import { config } from "https://deno.land/x/dotenv/mod.ts";
 
-const hapikey:string = config()['hapikey'];
-const port:number =  parseInt(config()['PORT']) || 8080;
+const hapikey:string = config()["hapikey"];
+const port:number =  parseInt(config()["PORT"]) || 8080;
 
 async function updateCell(row:number, cell:number, value:string) {
     await fetch(`https://api.hubapi.com/hubdb/api/v1/tables/105070/rows/${row}/cells/${cell}?hapikey=${hapikey}`, {
         method: "PUT",
-        body: JSON.stringify({ 'value': value }),
+        body: JSON.stringify({ "value": value }),
         headers: {
-            'Content-Type': 'application/json',
-            'User-Agent': 'Mozilla/5.0'
+            "Content-Type": "application/json",
+            "User-Agent": "Mozilla/5.0"
         }
     }).then(function(response) {
         console.log(`body: ${response.body}, status: ${response.status}`)
