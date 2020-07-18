@@ -3,8 +3,19 @@ import { config } from "https://deno.land/x/dotenv/mod.ts";
 
 const { HAPIKEY, PORT } = config({ safe: true });
 
-async function updateCell(row: number, cell: number, value: string | number) {
-  await fetch(
+/**
+ * Updates a single cell in a HubDB table
+ * @param {number} row row ID
+ * @param {number} cell cell ID
+ * @param {string | number} value yes/no, or timestamp
+ * @returns {number} HubAPI HTTP response code
+ */
+export async function updateCell(
+  row: number,
+  cell: number,
+  value: string | number,
+): Promise<number> {
+  const runUpdate = await fetch(
     `https://api.hubapi.com/hubdb/api/v1/tables/105070/rows/${row}/cells/${cell}?hapikey=${HAPIKEY}`,
     {
       method: "PUT",
@@ -14,10 +25,10 @@ async function updateCell(row: number, cell: number, value: string | number) {
         "User-Agent": "Mozilla/5.0",
       },
     },
-  ).then(function (response) {
-    console.log(`body: ${response.body}, status: ${response.status}`);
-    return response.json();
-  });
+  );
+  await runUpdate.json();
+  console.log(runUpdate.status);
+  return runUpdate.status;
 }
 
 const router = new Router();
@@ -28,8 +39,6 @@ router
   })
   .post("/:tap/:bool", (ctx) => {
     let row: number, value: string;
-    let d: Date = new Date("2020-04-13T00:00:00.000-04:00");
-    let timestamp: number = d.valueOf();
     if (ctx.params.bool === "yes") {
       value = "yes";
     } else {
@@ -53,7 +62,7 @@ router
         break;
     }
     updateCell(row, 4, value);
-    updateCell(row, 9, timestamp);
+    updateCell(row, 9, new Date().valueOf());
     ctx.response.status = 200;
     ctx.response.body = `{ message: ${ctx.response.status}}`;
   });
