@@ -37,7 +37,7 @@ router
   .get("/hello", (ctx) => {
     ctx.response.body = "API is running!";
   })
-  .post("/:tap/:bool", (ctx) => {
+  .post("/:tap/:bool", async (ctx) => {
     let row: number, value: string;
     if (ctx.params.bool === "yes") {
       value = "yes";
@@ -61,8 +61,8 @@ router
         row = 0;
         break;
     }
-    updateCell(row, 4, value);
-    updateCell(row, 9, new Date().valueOf());
+    await updateCell(row, 4, value);
+    await updateCell(row, 9, new Date().valueOf());
     ctx.response.status = 200;
     ctx.response.body = `{ message: ${ctx.response.status}}`;
   });
