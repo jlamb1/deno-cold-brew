@@ -4,6 +4,18 @@ import { config } from "https://deno.land/x/dotenv/mod.ts";
 const { HAPIKEY, PORT } = config({ safe: true });
 
 /**
+ * Returns a Unix Timestamp in the current TZ
+ * @returns {number} Timestamp
+ */
+const getTimeStamp = (): number => {
+  const getUTCDate:number = new Date().getTime();
+  const getTimeDiff:number = new Date().getTimezoneOffset();
+  const convertToMS:number = getTimeDiff * 60000;
+  const getLocalTS:number = new Date(getUTCDate - convertToMS).getTime();
+  return getLocalTS;
+};
+
+/**
  * Updates a single cell in a HubDB table
  * @param {number} row row ID
  * @param {number} cell cell ID
@@ -37,7 +49,7 @@ router
   .get("/hello", (ctx) => {
     ctx.response.body = "API is running!";
   })
-  .post("/:tap/:bool", async (ctx) => {
+  .post("/tap/:tap/status/:bool", async (ctx) => {
     let row: number, value: string;
     if (ctx.params.bool === "yes") {
       value = "yes";
@@ -45,16 +57,16 @@ router
       value = "no";
     }
     switch (ctx.params.tap) {
-      case "tap1":
+      case "1":
         row = 4483664102;
         break;
-      case "tap2":
+      case "2":
         row = 5104788209;
         break;
-      case "tap3":
+      case "3":
         row = 5105198498;
         break;
-      case "tap4":
+      case "4":
         row = 5105198728;
         break;
       default:
@@ -62,7 +74,7 @@ router
         break;
     }
     await updateCell(row, 4, value);
-    await updateCell(row, 9, new Date().valueOf());
+    await updateCell(row, 9, getTimeStamp());
     ctx.response.status = 200;
     ctx.response.body = `{ message: ${ctx.response.status}}`;
   });

@@ -6,9 +6,12 @@ Deno.test("Test assertEquals", () => {
   assert("Hello" === "Hello");
 });
 
-Deno.test("Test API Connection", async () => {
-  const test = await updateCell(4483664102, 4, "yes");
-  await assertEquals(200, test);
+Deno.test("Test API Connection", () => {
+  const test = updateCell(4483664102, 4, "yes");
+  console.log(test);
+  // assertEquals(200, test);
+  // await assertEquals(200, test);
+  // assertEquals(200, updateCell(4483664102, 4, "yes"));
 });
 
 // Deno.test("fetching TODOs", async () => {
