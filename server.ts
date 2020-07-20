@@ -8,10 +8,10 @@ const { HAPIKEY, PORT } = config({ safe: true });
  * @returns {number} Timestamp
  */
 const getTimeStamp = (): number => {
-  const getUTCDate:number = new Date().getTime();
-  const getTimeDiff:number = new Date().getTimezoneOffset();
-  const convertToMS:number = getTimeDiff * 60000;
-  const getLocalTS:number = new Date(getUTCDate - convertToMS).getTime();
+  const getUTCDate: number = new Date().getTime();
+  const getTimeDiff: number = new Date().getTimezoneOffset();
+  const convertToMS: number = getTimeDiff * 60000;
+  const getLocalTS: number = new Date(getUTCDate - convertToMS).getTime();
   return getLocalTS;
 };
 
