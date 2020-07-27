@@ -6,8 +6,11 @@ import { updateCell, getTimeStamp } from "./utils.ts";
 
 
 // Check Deno's assert function is working
-Deno.test("Test assertEquals", () => {
+Deno.test("Test Deno Asserts", () => {
   assertEquals(1, 1);
+  assertNotEquals(1, 2);
+  assertEquals("yes", "yes");
+  assertNotEquals("yes", "no");
 });
 
 // Ensure getTimestamp() returns a number

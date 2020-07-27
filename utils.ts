@@ -2,6 +2,10 @@ import { config } from "https://deno.land/x/dotenv/mod.ts";
 
 const { HAPIKEY } = config({ safe: true });
 
+interface UpdateCellResponse {
+    value: string
+}
+
 /**
  * Updates a single cell in a HubDB table
  * @param {number} row row ID
@@ -13,7 +17,7 @@ export const updateCell = async (
   row: number,
   cell: number,
   value: string | number,
-): Promise<any> => {
+): Promise<UpdateCellResponse> => {
   const res = await fetch(
     `https://api.hubapi.com/hubdb/api/v1/tables/105070/rows/${row}/cells/${cell}?hapikey=${HAPIKEY}`,
     {
