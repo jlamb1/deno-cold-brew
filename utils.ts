@@ -1,9 +1,10 @@
+/** @namespace */
 import { config } from "https://deno.land/x/dotenv/mod.ts";
 
 const { HAPIKEY } = config({ safe: true });
 
 interface UpdateCellResponse {
-    value: string
+  value: string;
 }
 
 /**
